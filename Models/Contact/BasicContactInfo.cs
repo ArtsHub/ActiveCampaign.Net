@@ -30,9 +30,9 @@ namespace ActiveCampaign.Net.Models.Contact
         [Newtonsoft.Json.JsonProperty("ip4")]
         public string IPAddress { get; set; }
 
-        //public List<Field> Fields { get; set; }
+        public List<Field> Fields { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("formid")]
+        [Newtonsoft.Json.JsonProperty("form")]
         public int FormId { get; set; }
     }
 }

@@ -33,8 +33,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -56,6 +56,7 @@
     <Compile Include="Models\Campaign\CampaignCreateResponse.cs" />
     <Compile Include="Models\Campaign\MessageAdd.cs" />
     <Compile Include="Models\Campaign\MessageAddResponse.cs" />
+    <Compile Include="Models\List\List.cs" />
     <Compile Include="Models\Contact\BasicContactInfo.cs" />
     <Compile Include="Models\Contact\BasicContactList.cs" />
     <Compile Include="Models\ContactList.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ActiveCampaignService.cs" />
     <Compile Include="Services\CampaignService.cs" />
+    <Compile Include="Services\ListService.cs" />
     <Compile Include="Services\ContactService.cs" />
     <Compile Include="Services\ExceptionService.cs" />
     <Compile Include="Services\ClientService.cs" />
@@ -89,9 +91,7 @@
     <None Include="ActiveCampaign.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
