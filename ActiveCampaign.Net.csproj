@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ActiveCampaign.Net</RootNamespace>
     <AssemblyName>ActiveCampaign.Net</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -26,13 +26,17 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\ArtsHub.NET\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ArtsHub, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ArtsHub.NET\Bin\ArtsHub.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -56,13 +60,14 @@
     <Compile Include="Models\Campaign\CampaignCreateResponse.cs" />
     <Compile Include="Models\Campaign\MessageAdd.cs" />
     <Compile Include="Models\Campaign\MessageAddResponse.cs" />
-    <Compile Include="Models\List\List.cs" />
+    <Compile Include="Models\List\BasicList.cs" />
     <Compile Include="Models\Contact\BasicContactInfo.cs" />
     <Compile Include="Models\Contact\BasicContactList.cs" />
     <Compile Include="Models\ContactList.cs" />
     <Compile Include="Models\Contact\ContactSyncResponse.cs" />
     <Compile Include="Models\ExtendedContactInfo.cs" />
     <Compile Include="Models\Contact\Field.cs" />
+    <Compile Include="Models\List\BasicListResponse.cs" />
     <Compile Include="Models\User\UserInfoResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ActiveCampaign.Designer.cs">

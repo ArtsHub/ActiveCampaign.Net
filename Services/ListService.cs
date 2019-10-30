@@ -33,20 +33,22 @@
         /// </summary>
         /// <param name="email">The email<see cref="string"/></param>
         /// <returns><see cref="BasicContactInfo"/></returns>
-        public List GetContactInfo(string listId)
+        public BasicList GetList(string listId)
         {
             var getData = new Dictionary<string, string> { { "id", listId } };
             var jsonResponse = SendRequest("list_view", getData, null);
 
-            return JsonConvert.DeserializeObject<List>(jsonResponse);
+            return JsonConvert.DeserializeObject<BasicList>(jsonResponse);
         }
 
 
-        List<List> ListsList()
+        public IEnumerable<BasicList> ListLists()
         {
-            var jsonResponse = SendRequest("list_list", null, null);
+            var jsonResponse = SendRequest("list_list", new Dictionary<string, string> { { "ids", "all" } }, null);
 
-            return JsonConvert.DeserializeObject<List<List>>(jsonResponse);
+            var basicListResponse = JsonConvert.DeserializeObject<BasicListResponse>(jsonResponse);
+
+            return basicListResponse.list;
 
         }
 
