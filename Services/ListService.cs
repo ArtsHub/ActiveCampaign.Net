@@ -42,13 +42,13 @@
         }
 
 
-        public IEnumerable<BasicList> ListLists()
+        public List<BasicList> ListLists()
         {
             var jsonResponse = SendRequest("list_list", new Dictionary<string, string> { { "ids", "all" } }, null);
 
             var basicListResponse = JsonConvert.DeserializeObject<BasicListResponse>(jsonResponse);
 
-            return basicListResponse.list;
+            return basicListResponse.List;
 
         }
 

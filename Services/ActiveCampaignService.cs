@@ -54,6 +54,8 @@ namespace ActiveCampaign.Net.Services
             urlBuilder.Append(ApiUrl);
             urlBuilder.Append("&api_action=").Append(method);
 
+            //api_output JSON
+            getParameters.Add("api_output", "json");
 
             if (getParameters != null)
             {
@@ -66,34 +68,31 @@ namespace ActiveCampaign.Net.Services
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             var request = (HttpWebRequest)WebRequest.Create(urlBuilder.ToString());
-            var postString = "";
-            var requestData = new StringBuilder();
-
-            request.Method = "GET";
-            request.ContentType = "application/x-www-form-urlencoded";
-
 
             if (postParameters != null)
             {
+                var requestData = new StringBuilder();
 
                 foreach (var postParameter in postParameters)
                 {
                     requestData.AppendFormat("&{0}={1}", HttpUtility.UrlEncode(postParameter.Key), HttpUtility.UrlEncode(postParameter.Value));
                 }
 
-                postString = requestData.ToString().Substring(1);
+                var postString = requestData.ToString().Substring(1);
 
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = postString.Length;
 
                 using (var stream = request.GetRequestStream())
                 {
                     stream.Write(Encoding.UTF8.GetBytes(postString), 0, postString.Length);
                 }
             }
-            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST : " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString() + "<br>REQUEST CONTENT : " + requestData.ToString());
-
-            //request.ContentLength = postString.Length;
+            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST : " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString());
 
             string jsonResponse;
+
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -104,14 +103,11 @@ namespace ActiveCampaign.Net.Services
                 {
                     jsonResponse = readStream.ReadToEnd();
                 }
-
                 ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > RESPONSE :  " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "response.ContentType : " + response.ContentType + "<br>response.StatusCode : " + response.StatusCode + "<br>  response.ContentLength : " + response.ContentLength + "<br>response.ResponseUri : " + response.ResponseUri + "<br> response.StatusDescription : " + response.StatusDescription + "<br> JSON : <br>" + jsonResponse);
             }
 
-
             return jsonResponse;
         }
-
         /// <summary>
         /// Check if response is successfull
         /// </summary>

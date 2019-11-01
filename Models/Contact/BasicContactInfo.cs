@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ActiveCampaign.Net.Models.Contact
@@ -7,6 +8,9 @@ namespace ActiveCampaign.Net.Models.Contact
     {
         [Newtonsoft.Json.JsonProperty("id")]
         public int Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("subscriberid")]
+        public long Subscriberid { get; set; }
 
         [Required]
         [Newtonsoft.Json.JsonProperty("email")]
@@ -18,21 +22,20 @@ namespace ActiveCampaign.Net.Models.Contact
         [Newtonsoft.Json.JsonProperty("last_name")]
         public string LastName { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("phone")]
-        public string Phone { get; set; }
+        [Newtonsoft.Json.JsonProperty("last_list")]
+        public string LastList { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("orgname")]
-        public string OrganizationName { get; set; }
+        [Newtonsoft.Json.JsonProperty("avatar_url")]
+        public string AvatarURL { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("tags")]
-        public List<string> Tags { get; set; }
+        [Newtonsoft.Json.JsonProperty("cdate")]
+        public DateTime CreatedOn { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("ip4")]
-        public string IPAddress { get; set; }
+        [Newtonsoft.Json.JsonProperty("sdate")]
+        public DateTime SubscribedOn { get; set; }
 
-        public List<Field> Fields { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("form")]
-        public int FormId { get; set; }
+
+
     }
 }

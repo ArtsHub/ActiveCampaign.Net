@@ -54,55 +54,65 @@
                 { "email", basicContactInfo.Email },
                 { "first_name", basicContactInfo.FirstName ?? string.Empty },
                 { "last_name", basicContactInfo.LastName ?? string.Empty },
-                { "phone", basicContactInfo.Phone ?? string.Empty },
-                { "orgname", basicContactInfo.OrganizationName ?? string.Empty },
-                { "form", basicContactInfo.FormId.ToString() ?? string.Empty },
+                //{ "phone", basicContactInfo.Phone ?? string.Empty },
+                //{ "orgname", basicContactInfo.OrganizationName ?? string.Empty },
+                //{ "form", basicContactInfo.FormId.ToString() ?? string.Empty },
             };
 
-            if (basicContactInfo.Tags != null && basicContactInfo.Tags.Any())
-            {
-                postData.Add("tags", string.Join(",", basicContactInfo.Tags));
-            }
+            //if (basicContactInfo.Tags != null && basicContactInfo.Tags.Any())
+            //{
+            //    postData.Add("tags", string.Join(",", basicContactInfo.Tags));
+            //}
 
-            foreach (var contactList in contactLists)
-            {
-                postData.Add(
-                    string.Format("p[{0}]", contactList.Id), contactList.Id.ToString());
+            //foreach (var contactList in contactLists)
+            //{
+            //    postData.Add(
+            //        string.Format("p[{0}]", contactList.Id), contactList.Id.ToString());
 
-                postData.Add(
-                    string.Format("status[{0}]", contactList.Id),
-                    contactList.Status.ToString("D"));
+            //    postData.Add(
+            //        string.Format("status[{0}]", contactList.Id),
+            //        contactList.Status.ToString("D"));
 
-                postData.Add(
-                    string.Format("noresponders[{0}]", contactList.Id),
-                    Convert.ToInt32(contactList.Noresponders).ToString());
+            //    postData.Add(
+            //        string.Format("noresponders[{0}]", contactList.Id),
+            //        Convert.ToInt32(contactList.Noresponders).ToString());
 
-                postData.Add(
-                    string.Format("sdate[{0}]", contactList.Id),
-                    contactList.SubscribeDate);
+            //    postData.Add(
+            //        string.Format("sdate[{0}]", contactList.Id),
+            //        contactList.SubscribeDate);
 
-                postData.Add(
-                    string.Format("instantresponders[{0}]", contactList.Id),
-                    Convert.ToInt32(contactList.InstantResponders).ToString());
+            //    postData.Add(
+            //        string.Format("instantresponders[{0}]", contactList.Id),
+            //        Convert.ToInt32(contactList.InstantResponders).ToString());
 
-                postData.Add(
-                    string.Format("lastmessage[{0}]", contactList.Id),
-                    Convert.ToInt32(contactList.LastMessage).ToString());
-            }
+            //    postData.Add(
+            //        string.Format("lastmessage[{0}]", contactList.Id),
+            //        Convert.ToInt32(contactList.LastMessage).ToString());
+            //}
 
-            if (basicContactInfo.Fields != null && basicContactInfo.Fields.Any())
-            {
-                foreach (var field in basicContactInfo.Fields)
-                {
-                    postData.Add(
-                        string.Format("field[{0},0]", field.Id != null ? field.Id.ToString() : field.Name),
-                        field.Value);
-                }
-            }
+            //if (basicContactInfo.Fields != null && basicContactInfo.Fields.Any())
+            //{
+            //    foreach (var field in basicContactInfo.Fields)
+            //    {
+            //        postData.Add(
+            //            string.Format("field[{0},0]", field.Id != null ? field.Id.ToString() : field.Name),
+            //            field.Value);
+            //    }
+            //}
 
             var jsonResponse = SendRequest("contact_sync", null, postData);
 
             return JsonConvert.DeserializeObject<ContactSyncResponse>(jsonResponse);
+        }
+
+        public List<BasicContactInfo> ListBasicContactInfo(int listId)
+        {
+            var jsonResponse = SendRequest("contact_list", new Dictionary<string, string> { { "ids", listId.ToString() }, { "full", "0" } }, null);
+
+            var basicListResponse = JsonConvert.DeserializeObject<BasicContactListResponse>(jsonResponse);
+
+            return basicListResponse.List;
+
         }
 
         #endregion

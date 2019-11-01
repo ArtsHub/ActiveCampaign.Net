@@ -60,6 +60,7 @@
     <Compile Include="Models\Campaign\CampaignCreateResponse.cs" />
     <Compile Include="Models\Campaign\MessageAdd.cs" />
     <Compile Include="Models\Campaign\MessageAddResponse.cs" />
+    <Compile Include="Models\Contact\BasicContactListResponse.cs" />
     <Compile Include="Models\List\BasicList.cs" />
     <Compile Include="Models\Contact\BasicContactInfo.cs" />
     <Compile Include="Models\Contact\BasicContactList.cs" />
