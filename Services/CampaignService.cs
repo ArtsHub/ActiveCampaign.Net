@@ -111,6 +111,17 @@
             }
         }
 
+        public List<BasicCampaign> List()
+        {
+            var jsonResponse = SendRequest("campaign_list", new Dictionary<string, string> { { "ids", "all" }, { "full", "0" } }, null);
+
+            var basicListResponse = JsonConvert.DeserializeObject<BasicCampaignListResponse>(jsonResponse);
+
+            return basicListResponse.List;
+
+        }
+
+
         #endregion
     }
 }
