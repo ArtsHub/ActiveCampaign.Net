@@ -62,6 +62,9 @@
     <Compile Include="Models\Campaign\CampaignCreateResponse.cs" />
     <Compile Include="Models\Campaign\MessageAdd.cs" />
     <Compile Include="Models\Campaign\MessageAddResponse.cs" />
+    <Compile Include="Models\Contact\CampaignHistory.cs" />
+    <Compile Include="Models\Contact\AutomationHistory.cs" />
+    <Compile Include="Models\Contact\Contact.cs" />
     <Compile Include="Models\Contact\ContactAction.cs" />
     <Compile Include="Models\Contact\BasicContactListResponse.cs" />
     <Compile Include="Models\List\Bounce.cs" />
