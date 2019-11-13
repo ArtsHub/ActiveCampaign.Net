@@ -10,7 +10,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public int Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("subscriberid")]
-        public long Subscriberid { get; set; }
+        public int Subscriberid { get; set; }
 
         [Required]
         [Newtonsoft.Json.JsonProperty("email")]
