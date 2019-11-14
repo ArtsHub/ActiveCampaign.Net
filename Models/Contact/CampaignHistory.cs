@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ActiveCampaign.Net.Models.Contact
 {
-    public class AutomationHistory
+    public class CampaignHistory
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -25,7 +25,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Email { get; set; }
 
         [JsonProperty("subscriberid")]
-        public id Subscriberid { get; set; }
+        public int Subscriberid { get; set; }
 
         [JsonProperty("reads")]
         public List<Read> Reads { get; set; }

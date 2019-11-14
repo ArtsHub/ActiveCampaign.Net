@@ -5,14 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ActiveCampaign.Net.Models.Contact
 {
-    public partial class Contact
+    public class Contact : BasicContactInfo
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        [JsonProperty("subscriberid")]
-        public int Subscriberid { get; set; }
-
         [JsonProperty("listid")]
         public int Listid { get; set; }
 
@@ -45,12 +39,6 @@ namespace ActiveCampaign.Net.Models.Contact
 
         [JsonProperty("unsubmessageid")]
         public int Unsubmessageid { get; set; }
-
-        [JsonProperty("first_name")]
-        public string FirstName { get; set; }
-
-        [JsonProperty("last_name")]
-        public string LastName { get; set; }
 
         [JsonProperty("ip4_sub")]
         public string Ip4Sub { get; set; }
@@ -100,8 +88,6 @@ namespace ActiveCampaign.Net.Models.Contact
         [JsonProperty("cdate")]
         public DateTime? Cdate { get; set; }
 
-        [JsonProperty("email")]
-        public string Email { get; set; }
 
         [JsonProperty("phone")]
         public string Phone { get; set; }
@@ -213,25 +199,16 @@ namespace ActiveCampaign.Net.Models.Contact
         public Bounces Bounces { get; set; }
 
         [JsonProperty("bouncescnt")]
-        public long Bouncescnt { get; set; }
+        public int Bouncescnt { get; set; }
 
         [JsonProperty("tags")]
         public List<string> Tags { get; set; }
 
         [JsonProperty("orgid")]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long Orgid { get; set; }
+        public int Orgid { get; set; }
 
         [JsonProperty("orgname")]
         public string Orgname { get; set; }
 
-        [JsonProperty("result_code")]
-        public long ResultCode { get; set; }
-
-        [JsonProperty("result_message")]
-        public string ResultMessage { get; set; }
-
-        [JsonProperty("result_output")]
-        public string ResultOutput { get; set; }
     }
 }

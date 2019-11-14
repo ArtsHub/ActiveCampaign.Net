@@ -15,7 +15,7 @@ namespace ActiveCampaign.Net.Models.List
         public string Name { get; set; }
 
         [JsonProperty("cdate")]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CDate { get; set; }
 
         [JsonProperty("private")]
         private string PrivateAsString { get; set; }
