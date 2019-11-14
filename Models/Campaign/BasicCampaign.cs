@@ -23,10 +23,13 @@ namespace ActiveCampaign.Net.Models.Campaign
         [JsonProperty("sdate")]
         private string _Sdate { get; set; }
 
-        public DateTime? SentDate { get { return (_Sdate.StartsWith("0000") || string.IsNullOrEmpty(_Sdate)) ? null :  (DateTime?)Convert.ToDateTime(_Sdate) ;  } }
+        public DateTime? SentDate { get { return (string.IsNullOrEmpty(_Sdate) || _Sdate.StartsWith("0000")) ? null :  (DateTime?)Convert.ToDateTime(_Sdate) ;  } }
 
         [JsonProperty("ldate")]
-        public DateTime? Ldate { get; set; }
+        private string _Ldate { get; set; }
+
+        public DateTime? LastEditedDate { get { return (string.IsNullOrEmpty(_Ldate) ||_Ldate.StartsWith("0000")) ? null : (DateTime?)Convert.ToDateTime(_Ldate); } }
+
 
         [JsonProperty("name")]
         public string Name { get; set; }

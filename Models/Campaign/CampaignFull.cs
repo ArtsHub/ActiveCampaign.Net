@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ActiveCampaign.Net.Models.Campaign
 {
-    public class Campaign : BasicCampaign
+    public class CampaignFull : BasicCampaign
     {
 
         [JsonProperty("userid")]

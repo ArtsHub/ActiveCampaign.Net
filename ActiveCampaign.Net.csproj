@@ -59,7 +59,7 @@
     <Compile Include="Models\Account\AccountPlansResponse.cs" />
     <Compile Include="Models\Campaign\Link.cs" />
     <Compile Include="Models\Campaign\Message.cs" />
-    <Compile Include="Models\Campaign\Campaign.cs" />
+    <Compile Include="Models\Campaign\CampaignFull.cs" />
     <Compile Include="Models\Campaign\BasicCampaign.cs" />
     <Compile Include="Models\Campaign\BasicCampaignListResponse.cs" />
     <Compile Include="Models\Campaign\CampaignCreate.cs" />
