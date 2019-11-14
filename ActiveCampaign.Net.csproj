@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom\CustomJsonDateConverter.cs" />
     <Compile Include="Enums\SubscriptionStatus.cs" />
     <Compile Include="Models\Account\AccountAdd.cs" />
     <Compile Include="Models\Account\AccountListResponse.cs" />

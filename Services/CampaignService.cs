@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using ActiveCampaign.Net.Custom;
     using ActiveCampaign.Net.Models.Campaign;
     using Newtonsoft.Json;
 
@@ -115,7 +116,9 @@
         {
             var jsonResponse = SendRequest("campaign_list", new Dictionary<string, string> { { "ids", "all" }, { "full", "0" } }, null);
 
-            var basicListResponse = JsonConvert.DeserializeObject<BasicCampaignListResponse>(jsonResponse);
+            var customJsonConverter = new CustomJsonDateConverter();
+
+            var basicListResponse = JsonConvert.DeserializeObject<BasicCampaignListResponse>(jsonResponse, customJsonConverter);
 
             return basicListResponse.List;
 

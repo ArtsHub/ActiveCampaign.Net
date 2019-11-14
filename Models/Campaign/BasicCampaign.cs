@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ActiveCampaign.Net.Custom;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,7 +21,9 @@ namespace ActiveCampaign.Net.Models.Campaign
         public DateTime Cdate { get; set; }
 
         [JsonProperty("sdate")]
-        public DateTime? Sdate { get; set; }
+        private string _Sdate { get; set; }
+
+        public DateTime? SentDate { get { return (_Sdate.StartsWith("0000") || string.IsNullOrEmpty(_Sdate)) ? null :  (DateTime?)Convert.ToDateTime(_Sdate) ;  } }
 
         [JsonProperty("ldate")]
         public DateTime? Ldate { get; set; }

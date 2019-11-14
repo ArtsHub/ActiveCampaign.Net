@@ -47,13 +47,17 @@
         /// <param name="basicContactInfo"></param>
         /// <param name="contactLists"></param>
         /// <returns><see cref="ContactSyncResponse"/></returns>
-        public ContactSyncResponse SyncContact(BasicContactInfo basicContactInfo, IEnumerable<BasicContactList> contactLists)
+        public ContactSyncResponse SyncContact(Contact contact, IEnumerable<BasicContactList> contactLists)
         {
             var postData = new Dictionary<string, string>
             {
-                { "email", basicContactInfo.Email },
-                { "first_name", basicContactInfo.FirstName ?? string.Empty },
-                { "last_name", basicContactInfo.LastName ?? string.Empty },
+                { "email", contact.Email },
+                { "first_name", contact.FirstName ?? string.Empty },
+                { "last_name", contact.LastName ?? string.Empty },
+                { "customer_acct_name", contact.CustomerAcctName ?? string.Empty },
+                { "tags", string.Join(",", contact.Tags.ToArray() )},
+                { "field[0]", contact.CustomerAcctName ?? string.Empty },
+
                 //{ "phone", basicContactInfo.Phone ?? string.Empty },
                 //{ "orgname", basicContactInfo.OrganizationName ?? string.Empty },
                 //{ "form", basicContactInfo.FormId.ToString() ?? string.Empty },
