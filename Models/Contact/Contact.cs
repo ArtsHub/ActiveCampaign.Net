@@ -108,7 +108,10 @@ namespace ActiveCampaign.Net.Models.Contact
         public int BouncedSoft { get; set; }
 
         [JsonProperty("bounced_date")]
-        public DateTime? BouncedDate { get; set; }
+        private string _BouncedDate { get; set; }
+
+        public DateTime? BouncedDate { get { return (string.IsNullOrEmpty(_BouncedDate) || _BouncedDate.StartsWith("0000")) ? null : (DateTime?)Convert.ToDateTime(_BouncedDate); } }
+
 
         [JsonProperty("ip")]
         public string Ip { get; set; }
@@ -120,7 +123,10 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Hash { get; set; }
 
         [JsonProperty("socialdata_lastcheck")]
-        public DateTime? SocialdataLastcheck { get; set; }
+        private string _SocialdataLastcheck { get; set; }
+
+        public DateTime? SocialdataLastcheck { get { return (string.IsNullOrEmpty(_SocialdataLastcheck) || _SocialdataLastcheck.StartsWith("0000")) ? null : (DateTime?)Convert.ToDateTime(_SocialdataLastcheck); } }
+
 
         [JsonProperty("email_local")]
         public string EmailLocal { get; set; }
@@ -135,7 +141,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public int Rating { get; set; }
 
         [JsonProperty("rating_tstamp")]
-        public DateTime RatingTstamp { get; set; }
+        public string RatingTstamp { get; set; }
 
         [JsonProperty("gravatar")]
         public int Gravatar { get; set; }
@@ -160,34 +166,34 @@ namespace ActiveCampaign.Net.Models.Contact
 
 
         [JsonProperty("adate")]
-        public DateTime? Adate { get; set; }
+        public string Adate { get; set; }
 
         [JsonProperty("edate")]
-        public DateTime? Edate { get; set; }
+        public string Edate { get; set; }
 
         [JsonProperty("deleted_at")]
         public string DeletedAt { get; set; }
 
         [JsonProperty("created_utc_timestamp")]
-        public DateTime? CreatedUtcTimestamp { get; set; }
+        public string CreatedUtcTimestamp { get; set; }
 
         [JsonProperty("updated_utc_timestamp")]
-        public DateTime? UpdatedUtcTimestamp { get; set; }
+        public string UpdatedUtcTimestamp { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("lists")]
-        public List<Models.List.BasicList> Lists { get; set; }
+        public  Dictionary<string,Models.List.BasicList> Lists { get; set; }
 
         [JsonProperty("listslist")]
         public string Listslist { get; set; }
 
         [JsonProperty("fields")]
-        public List<Field> Fields { get; set; }
+        public Dictionary<string,Field> Fields { get; set; }
 
         [JsonProperty("actions")]
-        public List<Action> Actions { get; set; }
+        public List<Models.Contact.Action> Actions { get; set; }
 
         [JsonProperty("automation_history")]
         public List<AutomationHistory> AutomationHistory { get; set; }
@@ -209,6 +215,38 @@ namespace ActiveCampaign.Net.Models.Contact
 
         [JsonProperty("orgname")]
         public string Orgname { get; set; }
+
+        /// <summary>
+        /// Get Field by id
+        /// May return NULL
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <returns></returns>
+        public Field GetField(int fieldId)
+        {
+            Field requestedField = null;
+
+            if(this.Fields !=  null && this.Fields.Count > 0)
+            {
+                requestedField = Fields[fieldId.ToString()];
+            }
+
+             return requestedField;
+        }
+        /// <summary>
+        /// Set Field by id
+        /// May return NULL
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetField(int fieldId, string value)
+        {
+            if(this.Fields !=  null && this.Fields.Count > 0)
+            {
+                this.Fields[fieldId.ToString()].Val = value;
+            }
+        }
 
     }
 }

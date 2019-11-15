@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ActiveCampaign.Net.Models.Contact
 {
-    public partial class Field
+    public class Field
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -62,10 +62,10 @@ namespace ActiveCampaign.Net.Models.Contact
         public int Ordernum { get; set; }
 
         [JsonProperty("cdate")]
-        public DateTime Cdate { get; set; }
+        public string Cdate { get; set; }
 
         [JsonProperty("udate")]
-        public DateTime Udate { get; set; }
+        public string Udate { get; set; }
 
         [JsonProperty("val")]
         public string Val { get; set; }

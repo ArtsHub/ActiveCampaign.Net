@@ -32,12 +32,25 @@
         /// </summary>
         /// <param name="email">The email<see cref="string"/></param>
         /// <returns><see cref="BasicContactInfo"/></returns>
-        public BasicContactInfo GetContactInfo(string email)
+        public Contact GetBasicContactInfo(string email)
         {
             var getData = new Dictionary<string, string> { { "email", email } };
             var jsonResponse = SendRequest("contact_view_email", getData, null);
 
-            return JsonConvert.DeserializeObject<BasicContactInfo>(jsonResponse);
+            return JsonConvert.DeserializeObject<Contact>(jsonResponse);
+        }
+
+        /// <summary>
+        /// View only one contact's details by searching for their email address.
+        /// </summary>
+        /// <param name="email">The email<see cref="string"/></param>
+        /// <returns><see cref="BasicContact"/></returns>
+        public Contact GetContact(int id)
+        {
+            var getData = new Dictionary<string, string> { { "id", id.ToString() } };
+            var jsonResponse = SendRequest("contact_view", getData, null);
+
+            return JsonConvert.DeserializeObject<Contact>(jsonResponse);
         }
 
         /// <summary>

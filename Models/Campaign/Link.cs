@@ -23,7 +23,7 @@ namespace ActiveCampaign.Net.Models.Campaign
         public string Messageid { get; set; }
 
         [JsonProperty("actions")]
-        public List<object> Actions { get; set; }
+        public List<Models.Contact.Action> Actions { get; set; }
 
         [JsonProperty("title")]
         public string Title { get; set; }
