@@ -15,7 +15,7 @@ namespace ActiveCampaign.Net.Models.Campaign
         public string Type { get; set; }
 
         [JsonProperty("status")]
-        public string Status { get; set; }
+        public int Status { get; set; }
 
         [JsonProperty("cdate")]
         public DateTime Cdate { get; set; }

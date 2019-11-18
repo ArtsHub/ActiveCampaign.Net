@@ -17,10 +17,10 @@ namespace ActiveCampaign.Net.Models.Contact
         public int Seriesid { get; set; }
 
         [JsonProperty("sdate")]
-        public DateTime Sdate { get; set; }
+        public string Sdate { get; set; }
 
         [JsonProperty("udate")]
-        public DateTime Udate { get; set; }
+        public string Udate { get; set; }
 
         [JsonProperty("status")]
         public int Status { get; set; }
@@ -59,7 +59,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public DateTime CreatedTimestamp { get; set; }
 
         [JsonProperty("updated_timestamp")]
-        public DateTime? UpdatedTimestamp { get; set; }
+        public string UpdatedTimestamp { get; set; }
 
         [JsonProperty("created_by")]
         public string CreatedBy { get; set; }
@@ -71,7 +71,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Listname { get; set; }
 
         [JsonProperty("sdate_iso")]
-        public DateTime? SdateIso { get; set; }
+        public string SdateIso { get; set; }
 
         [JsonProperty("lid")]
         public int Lid { get; set; }
@@ -80,13 +80,13 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Ip4 { get; set; }
 
         [JsonProperty("a_unsub_date")]
-        public DateTime? AUnsubDate { get; set; }
+        public string AUnsubDate { get; set; }
 
         [JsonProperty("a_unsub_time")]
-        public DateTime? AUnsubTime { get; set; }
+        public string AUnsubTime { get; set; }
 
         [JsonProperty("cdate")]
-        public DateTime? Cdate { get; set; }
+        public string Cdate { get; set; }
 
 
         [JsonProperty("phone")]

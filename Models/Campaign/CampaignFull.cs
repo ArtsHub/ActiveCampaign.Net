@@ -168,8 +168,18 @@ namespace ActiveCampaign.Net.Models.Campaign
         [JsonProperty("fake_ldate")]
         public DateTime? FakeLdate { get; set; }
 
+
+        [JsonProperty("public")]
+        public string Public { get; set; }
+
         [JsonProperty("lists")]
         public List< ActiveCampaign.Net.Models.List.List> Lists { get; set; }
+
+        [JsonProperty("p")]
+        public Dictionary<int,int> listIds{ get; set; }
+        
+        [JsonProperty("m")]
+        public Dictionary<int,int> messageIdArray{ get; set; }
 
         [JsonProperty("listslist")]
         public int Listslist { get; set; }
