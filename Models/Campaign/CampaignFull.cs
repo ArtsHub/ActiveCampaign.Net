@@ -11,6 +11,9 @@ namespace ActiveCampaign.Net.Models.Campaign
         [JsonProperty("userid")]
         public int Userid { get; set; }
 
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
         [JsonProperty("segmentid")]
         public int Segmentid { get; set; }
 

@@ -116,10 +116,6 @@
         /// Gets or sets a value indicating the list ids to be used for extracting the contacts to deliver the campaign.
         /// </summary>
         public List<int> ListIds { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating the list ids to be used for extracting the contacts to deliver the campaign.
-        /// </summary>
-        public List<int> MessageIds { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the status of the campaign. Example: 0 = draft, 1 = scheduled

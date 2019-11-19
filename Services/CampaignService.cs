@@ -94,7 +94,7 @@
                     { "textunsub", model.IsToAppendUnsuscribeLinkToTextBody ? "1" : "0" },
                     { "htmlunsubdata", model.HtmlUnsubscribeCustomData },
                     { "textunsubdata", model.TextUnsubscribeCustomData },
-                    { $"m[{model.MessageId}]", model.MessageId.ToString() },
+                    { $"m[{model.MessageId}]", "100" },
                 };
 
                 foreach (int listId in model.ListIds)
@@ -122,6 +122,17 @@
 
             return basicListResponse.List;
 
+        }
+
+        public BasicCampaign GetBasicCampaign(int id)
+        {
+            var jsonResponse = SendRequestV3("campaign_list", id, new Dictionary<string, string> { { "ids", "all" }, { "full", "0" } });
+
+            var customJsonConverter = new CustomJsonDateConverter();
+
+            var basicListResponse = JsonConvert.DeserializeObject<CampaignFull>(jsonResponse, customJsonConverter);
+
+            return basicListResponse;
         }
 
 

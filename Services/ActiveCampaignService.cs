@@ -37,7 +37,70 @@ namespace ActiveCampaign.Net.Services
 
             return cleanedUrl + "/admin/api.php?api_output=json";
         }
+        private string CreateBaseUrlV3(string accountName)
+        {
+            return "https://" + accountName + ".api-us1.com/api/3/";
 
+        }
+
+        /// <summary>
+        /// Send Request method. 
+        /// </summary>
+        /// <param name="method">Active Campaign method name</param>
+        /// <param name="getParameters">Optional. Dictionary with GET parameters</param>
+        /// <param name="postParameters">Optional. Dictionary with POST parameters</param>
+        /// <returns>JSON response as string from Active Campaign API</returns>
+        public string SendRequestV3(string method, int? id, Dictionary<string, string> getParameters = null)
+        {
+            if (string.IsNullOrEmpty(method))
+                throw new ArgumentException("A valid ActiveCampaign API method was not specified", nameof(method));
+
+            var urlBuilder = new StringBuilder();
+            urlBuilder.Append(ApiUrl);
+            urlBuilder.Append(method + "/");
+
+            //If request is in  format https://artshub.api-us1.com/api/3/campaigns/28
+            if (id.HasValue) urlBuilder.Append(id.Value);
+
+            //api_output JSON
+            getParameters.Add("?api_output", "json");
+
+            if (getParameters != null)
+            {
+                foreach (var parameter in getParameters)
+                {
+                    urlBuilder.AppendFormat("&{0}={1}", HttpUtility.UrlEncode(parameter.Key), HttpUtility.UrlEncode(parameter.Value));
+                }
+            }
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            var request = (HttpWebRequest)WebRequest.Create(urlBuilder.ToString());
+
+            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequestV3() > REQUEST : " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString());
+
+            string jsonResponse;
+
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                var responseStream = response.GetResponseStream();
+
+                // Pipes the stream to a higher level stream reader with the required encoding format. 
+                using (var readStream = new StreamReader(responseStream, Encoding.UTF8))
+                {
+                    jsonResponse = readStream.ReadToEnd();
+                }
+                ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > RESPONSE :  " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "response.ContentType : " + response.ContentType + "<br>response.StatusCode : " + response.StatusCode + "<br>  response.ContentLength : " + response.ContentLength + "<br>response.ResponseUri : " + response.ResponseUri + "<br> response.StatusDescription : " + response.StatusDescription + "<br> JSON : <br>" + jsonResponse);
+            }
+
+            return jsonResponse;
+        }
+        /// <summary>
+        /// Check if response is successfull
+        /// </summary>
+        /// <param name="response">Result type</param>
+        /// <returns>bool</returns>
         /// <summary>
         /// Send Request method. 
         /// </summary>
