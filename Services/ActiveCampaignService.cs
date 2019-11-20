@@ -108,7 +108,7 @@ namespace ActiveCampaign.Net.Services
         /// <param name="getParameters">Optional. Dictionary with GET parameters</param>
         /// <param name="postParameters">Optional. Dictionary with POST parameters</param>
         /// <returns>JSON response as string from Active Campaign API</returns>
-        public string SendRequest(string method, Dictionary<string, string> getParameters = null, Dictionary<string, string> postParameters = null)
+        public string SendRequest(string method, Dictionary<string, string> getParameters, Dictionary<string, string> postParameters = null)
         {
             if (string.IsNullOrEmpty(method))
                 throw new ArgumentException("A valid ActiveCampaign API method was not specified", nameof(method));
@@ -117,20 +117,29 @@ namespace ActiveCampaign.Net.Services
             urlBuilder.Append(ApiUrl);
             urlBuilder.Append("&api_action=").Append(method);
 
+
             //api_output JSON
             getParameters.Add("api_output", "json");
+
+            //ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST BEFORE GET: " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "URL : " + urlBuilder.ToString());
 
             if (getParameters != null)
             {
                 foreach (var parameter in getParameters)
                 {
-                    urlBuilder.AppendFormat("&{0}={1}", HttpUtility.UrlEncode(parameter.Key), HttpUtility.UrlEncode(parameter.Value));
+                    if (!string.IsNullOrEmpty(parameter.Key) && parameter.Value != null)
+                    {
+                        urlBuilder.AppendFormat("&{0}={1}", HttpUtility.UrlEncode(parameter.Key), HttpUtility.UrlEncode(parameter.Value));
+                    }
                 }
             }
+
+            //ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST BEFORE POST: " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : ");
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             var request = (HttpWebRequest)WebRequest.Create(urlBuilder.ToString());
+
 
             if (postParameters != null)
             {
@@ -138,7 +147,10 @@ namespace ActiveCampaign.Net.Services
 
                 foreach (var postParameter in postParameters)
                 {
-                    requestData.AppendFormat("&{0}={1}", HttpUtility.UrlEncode(postParameter.Key), HttpUtility.UrlEncode(postParameter.Value));
+                    if (postParameter.Value != null)
+                    {
+                        requestData.AppendFormat("&{0}={1}", HttpUtility.UrlEncode(postParameter.Key), HttpUtility.UrlEncode(postParameter.Value));
+                    }
                 }
 
                 var postString = requestData.ToString().Substring(1);
@@ -152,7 +164,8 @@ namespace ActiveCampaign.Net.Services
                     stream.Write(Encoding.UTF8.GetBytes(postString), 0, postString.Length);
                 }
             }
-            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST : " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString());
+
+            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST AFTER POST: " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString());
 
             string jsonResponse;
 

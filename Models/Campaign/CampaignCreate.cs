@@ -99,7 +99,7 @@
         /// Gets or sets a value indicating the date when the campaign should be sent out (not used for campaign types 'responder', 'reminder', 'special').
         /// Example: '2010-11-05 08:40:00'
         /// </summary>
-        public DateTime ScheduleDate { get; set; }
+        public DateTime? ScheduleDate { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating List segment ID (0 for no segment)
@@ -110,7 +110,7 @@
         /// <summary>
         /// Gets or sets a value indicating message id to be used for creating a campaign.
         /// </summary>
-        public long MessageId { get; set; }
+        public int MessageId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the list ids to be used for extracting the contacts to deliver the campaign.

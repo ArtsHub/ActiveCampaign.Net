@@ -14,7 +14,7 @@
         /// Example: 2
         /// </summary>
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the subject of the message just added.

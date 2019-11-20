@@ -49,18 +49,23 @@
                     { "charset",  string.IsNullOrEmpty(model.Charset) ? "utf-8" : model.Charset },
                     { "encoding", string.IsNullOrEmpty(model.Encoding) ? "quoted-printable" : model.Encoding },
                     { "htmlconstructor", string.IsNullOrEmpty(model.HtmlConstructor) ? "editor" : model.HtmlConstructor },
-                    { "html", model.Html },
+                    { "htmlfetch", string.IsNullOrEmpty(model.HtmlFetch) ? "editor" : model.HtmlFetch },
+                    { "htmlfetchwhen", string.IsNullOrEmpty(model.HtmlFetchWhen) ? "" : model.HtmlFetchWhen },
+                    { "html", string.IsNullOrEmpty(model.Html)? "HTML is null or empty" : model.Html },
                     { "textconstructor", string.IsNullOrEmpty(model.TextConstructor) ? "editor" : model.TextConstructor },
-                    { "text", model.Text },
-                    { $"p[{model.ListId}]", model.ListId.ToString() },
+                    { "text", string.IsNullOrEmpty(model.Text)? "Text is null or empty":model.Text },
+                    { $"p[{model.ListId}]", string.IsNullOrEmpty(model.ListId.ToString())?"0":model.ListId.ToString() },
                 };
 
-                var jsonResponse = SendRequest("message_add", null, postData);
+
+                var jsonResponse = SendRequest("message_add", new Dictionary<string, string>(), postData);
 
                 return JsonConvert.DeserializeObject<MessageAddResponse>(jsonResponse);
             }
             catch (Exception ex)
             {
+                ArtsHub.BLL.Emailing.Emailing.EmailException(" in CampaignService.MessageAdd", "", ex);
+
                 throw new ExceptionService(ex.Message);
             }
         }
@@ -80,7 +85,7 @@
                     { "type", model.Type.ToString().ToLower() },
                     { "segmentid", model.SegmentId.ToString() },
                     { "name", model.Name },
-                    { "sdate", model.ScheduleDate.ToString("yyyy-MM-dd HH:mm:ss") },
+                    { "sdate",model.ScheduleDate.HasValue ? model.ScheduleDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "0000-00-00 00:00:00" },
                     { "status", ((int)model.Status).ToString() },
                     { "public", model.Visible ? "1" : "0" },
                     { "tracklinks", model.TrackLinks.ToString().ToLower() },
@@ -102,7 +107,7 @@
                     postData.Add("p[{listId}]", listId.ToString());
                 }
 
-                var jsonResponse = SendRequest("campaign_create", null, postData);
+                var jsonResponse = SendRequest("campaign_create", new Dictionary<string, string>(), postData);
 
                 return JsonConvert.DeserializeObject<CampaignCreateResponse>(jsonResponse);
             }
