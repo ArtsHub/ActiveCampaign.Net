@@ -8,6 +8,18 @@ namespace ActiveCampaign.Net.Models.Campaign
     public class CampaignFull : BasicCampaign
     {
 
+        public CampaignStatus? CampaignStatus
+        {
+            get
+            {
+                int status = 0;
+
+                int.TryParse(Status, out status);
+
+                return (CampaignStatus)status;
+            }
+        }
+
         [JsonProperty("userid")]
         public int Userid { get; set; }
 
@@ -93,7 +105,7 @@ namespace ActiveCampaign.Net.Models.Campaign
         [JsonProperty("trackreads")]
         public int Trackreads { get; set; }
 
-        [JsonProperty("trackreadsanalytics")]        
+        [JsonProperty("trackreadsanalytics")]
         public int Trackreadsanalytics { get; set; }
 
         [JsonProperty("analytics_campaign_name")]
@@ -165,6 +177,8 @@ namespace ActiveCampaign.Net.Models.Campaign
         [JsonProperty("scheduleddate")]
         public string ScheduledDate { get; set; }
 
+        public string ScheduledDateFixed { get { return CampaignStatus == Campaign.CampaignStatus.scheduled ? SentDate : ""; } }
+
         [JsonProperty("replysys")]
         public int Replysys { get; set; }
 
@@ -176,13 +190,13 @@ namespace ActiveCampaign.Net.Models.Campaign
         public string Public { get; set; }
 
         [JsonProperty("lists")]
-        public List< ActiveCampaign.Net.Models.List.List> Lists { get; set; }
+        public List<ActiveCampaign.Net.Models.List.List> Lists { get; set; }
 
         [JsonProperty("p")]
-        public Dictionary<int,int> listIds{ get; set; }
-        
+        public Dictionary<int, int> listIds { get; set; }
+
         [JsonProperty("m")]
-        public Dictionary<int,int> messageIdArray{ get; set; }
+        public Dictionary<int, int> messageIdArray { get; set; }
 
         [JsonProperty("listslist")]
         public string Listslist { get; set; }

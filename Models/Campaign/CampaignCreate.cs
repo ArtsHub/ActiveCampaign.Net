@@ -18,8 +18,12 @@
 
     public enum CampaignStatus
     {
-        Draft = 0,
-        Scheduled = 1
+        draft = 0,
+        scheduled = 1,
+        sending = 2,
+        paused = 3,
+        stopped = 4,
+        completed = 5
     }
 
     public enum LinkTrackingType

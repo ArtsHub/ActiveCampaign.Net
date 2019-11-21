@@ -1,11 +1,11 @@
 ﻿namespace ActiveCampaign.Net.Services
 {
-    using System;
-    using System.Collections.Generic;
     using ActiveCampaign.Net.Custom;
     using ActiveCampaign.Net.Enums;
     using ActiveCampaign.Net.Models.Campaign;
     using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Defines the class to be used to deal with the active campaign's campaigning
@@ -25,7 +25,7 @@
         {
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
@@ -57,7 +57,6 @@
                     { "text", string.IsNullOrEmpty(model.Text)? "Text is null or empty":model.Text },
                     { $"p[{model.ListId}]", string.IsNullOrEmpty(model.ListId.ToString())?"0":model.ListId.ToString() },
                 };
-
 
                 var jsonResponse = SendRequest("message_add", new Dictionary<string, string>(), postData);
 
@@ -118,7 +117,7 @@
             }
         }
 
-        public List<BasicCampaign> ListBasicCampigns(Dictionary<string,string> getParameters)
+        public List<BasicCampaign> ListBasicCampigns(Dictionary<string, string> getParameters)
         {
             var jsonResponse = SendRequest("campaign_list", getParameters, null);
 
@@ -127,56 +126,83 @@
             var basicListResponse = JsonConvert.DeserializeObject<BasicCampaignListResponse>(jsonResponse, customJsonConverter);
 
             return basicListResponse.List;
-
         }
-        public List<CampaignFull> ListFullCampaigns(Dictionary<string,string> getParameters)
+
+        public List<CampaignFull> ListFullCampaigns(Dictionary<string, string> getParameters)
         {
             var jsonResponse = SendRequest("campaign_list", getParameters, null);
 
-            var customJsonConverter = new CustomJsonDateConverter();
-
-            var listResponse = JsonConvert.DeserializeObject<CampaignFullListResponse>(jsonResponse, customJsonConverter);
+            var listResponse = JsonConvert.DeserializeObject<CampaignFullListResponse>(jsonResponse);
 
             return listResponse.List;
-
         }
 
         public BasicCampaign GetBasicCampaign(int id)
         {
-            var jsonResponse = SendRequestV3("campaign_list", id, new Dictionary<string, string> { { "ids", "all" }, { "full", "0" } });
+            var jsonResponse = SendRequest("campaign_list", new Dictionary<string, string> { { "ids", id.ToString() }, { "full", "0" } });
 
-            var customJsonConverter = new CustomJsonDateConverter();
-
-            var basicListResponse = JsonConvert.DeserializeObject<CampaignFull>(jsonResponse, customJsonConverter);
+            var basicListResponse = JsonConvert.DeserializeObject<CampaignFull>(jsonResponse);
 
             return basicListResponse;
         }
+
+        public CampaignFull GetFullCampaign(int id)
+        {
+            var jsonResponse = SendRequest("campaign_list", new Dictionary<string, string> { { "ids", id.ToString() }, { "full", "1" } });
+
+            var listResponse = JsonConvert.DeserializeObject<CampaignFullListResponse>(jsonResponse);
+
+            CampaignFull firstCampaign = null;
+
+            if(listResponse.List != null && listResponse.List.Count > 0)
+            {
+                firstCampaign = listResponse.List[0];
+            }
+            
+            return firstCampaign;
+        }
+
         public int DeleteCampaign(int id)
         {
             var jsonResponse = SendRequest("campaign_delete", new Dictionary<string, string> { { "id", id.ToString() } });
 
-            var customJsonConverter = new CustomJsonDateConverter();
-
-            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse, customJsonConverter);
+            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse);
 
             return result.ResultCode;
         }
+
         /// <summary>
         /// Send an existing campaign using optional actions like 'copy', 'preview', 'test'.
         /// </summary>
         /// <param name="campaignId"></param>
         /// <param name="messageId"></param>
         /// <param name="action">Examples: 'send' = send a campaign to this contact and to append him to the recipients list, 'copy' = send a copy of a campaign to contact (campaign is not updated), 'test' = send a test email to contact (campaign is not updated), 'source' = simulate a campaign test to contact (campaign is not updated), return message source, 'messagesize' = simulate a campaign test to contact (campaign is not updated), return message size, 'spamcheck' = simulate a campaign test to contact (campaign is not updated), return spam rate, 'preview' = same as preview
-        /// Example response:	
+        /// Example response:
         ///Variable Description
         ///result_code Whether or not the response was successful.Examples: 1 = yes, 0 = no
         ///result_message  A custom message that appears explaining what happened. Example: Message sent
         ///result_output The result output used.Example: serialize
         ///param>
         /// <returns></returns>
-        public int CampaignSend(int campaignId, int messageId, CampaignSendAction action )
+        public int CampaignSend(int campaignId, CampaignSendAction action, string messageId, string emailId)
         {
-            var jsonResponse = SendRequest("campaign_send", new Dictionary<string, string> { { "id", campaignId.ToString() }, { "messageid", messageId.ToString() }, { "action" , action.ToString()  }  });
+
+            var jsonResponse = SendRequest("campaign_send", new Dictionary<string, string> { { "campaignid", campaignId.ToString() }, { "messageid", messageId.ToString() }, { "action", action.ToString() }, { "email", emailId } });
+
+            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse);
+
+            return result.ResultCode;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="campaignId"></param>
+        /// <param name="dateScheduled">New scheduled date (use format YYYY-MM-DD HH:MM:SS). This only applies to scheduled campaigns (status = 1), and "single" (regular/one-time)</param>
+        /// <param name="status">New status. Examples: 0 = draft, 1 = scheduled, 2 = sending, 3 = paused, 4 = stopped, 5 = completed</param>
+        /// <returns></returns>
+        public int UpdateCampaignStatus(int campaignId, string dateScheduled, CampaignStatus status)
+        {
+            var jsonResponse = SendRequest("campaign_status", new Dictionary<string, string> { { "id", campaignId.ToString() },{ "sdate", dateScheduled }, { "status", ((int)(status)).ToString() } });
 
             var customJsonConverter = new CustomJsonDateConverter();
 
@@ -185,7 +211,6 @@
             return result.ResultCode;
         }
 
-
-        #endregion
+        #endregion Methods
     }
 }
