@@ -7,7 +7,7 @@ namespace ActiveCampaign.Net.Models.Contact
     public class Read
     {
         [JsonProperty("tstamp")]
-        public DateTimeOffset Tstamp { get; set; }
+        public string Tstamp { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }

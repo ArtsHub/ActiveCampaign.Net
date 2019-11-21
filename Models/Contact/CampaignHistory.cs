@@ -19,7 +19,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Campaignname { get; set; }
 
         [JsonProperty("sdate")]
-        public DateTime Sdate { get; set; }
+        public string Sdate { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }

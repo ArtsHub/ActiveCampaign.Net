@@ -15,24 +15,19 @@ namespace ActiveCampaign.Net.Models.Campaign
         public string Type { get; set; }
 
         [JsonProperty("status")]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         [JsonProperty("cdate")]
-        public DateTime Cdate { get; set; }
+        public string CreatedDate { get; set; }
 
         [JsonProperty("sdate")]
-        private string _Sdate { get; set; }
-
-        public DateTime? SentDate { get { return (string.IsNullOrEmpty(_Sdate) || _Sdate.StartsWith("0000")) ? null :  (DateTime?)Convert.ToDateTime(_Sdate) ;  } }
+        public string SentDate { get; set; }
 
         [JsonProperty("ldate")]
-        private string _Ldate { get; set; }
-
-        public DateTime? LastEditedDate { get { return (string.IsNullOrEmpty(_Ldate) ||_Ldate.StartsWith("0000")) ? null : (DateTime?)Convert.ToDateTime(_Ldate); } }
-
+        public string LastEditedDate { get; set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         [JsonProperty("send_amt")]
         public string SendAmt { get; set; }

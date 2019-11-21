@@ -20,10 +20,10 @@ namespace ActiveCampaign.Net.Models.Campaign
         public string EdVersion { get; set; }
 
         [JsonProperty("cdate")]
-        public DateTime? Cdate { get; set; }
+        public string CDate { get; set; }
 
         [JsonProperty("mdate")]
-        public DateTime? Mdate { get; set; }
+        public string MDate { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -105,7 +105,7 @@ namespace ActiveCampaign.Net.Models.Campaign
         public List<Link> Links { get; set; }
 
         [JsonProperty("images")]
-        public List<object> Images { get; set; }
+        public dynamic Images { get; set; }
 
         [JsonProperty("percentage")]
         public string Percentage { get; set; }

@@ -56,7 +56,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Ip4Unsub { get; set; }
 
         [JsonProperty("created_timestamp")]
-        public DateTime CreatedTimestamp { get; set; }
+        public string CreatedTimestamp { get; set; }
 
         [JsonProperty("updated_timestamp")]
         public string UpdatedTimestamp { get; set; }

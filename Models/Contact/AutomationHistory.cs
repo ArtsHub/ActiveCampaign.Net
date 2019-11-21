@@ -10,7 +10,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Name { get; set; }
 
         [JsonProperty("adddate")]
-        public DateTimeOffset Adddate { get; set; }
+        public string Adddate { get; set; }
 
         [JsonProperty("id")]
         public int Id { get; set; }

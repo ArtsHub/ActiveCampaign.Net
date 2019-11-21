@@ -36,7 +36,7 @@ namespace ActiveCampaign.Net.Models.Campaign
         public string Source { get; set; }
 
         [JsonProperty("mdate")]
-        public DateTime? Mdate { get; set; }
+        public string Mdate { get; set; }
 
 
         [JsonProperty("opens")]
@@ -163,13 +163,13 @@ namespace ActiveCampaign.Net.Models.Campaign
         public int Schedule { get; set; }
 
         [JsonProperty("scheduleddate")]
-        public DateTime? Scheduleddate { get; set; }
+        public string ScheduledDate { get; set; }
 
         [JsonProperty("replysys")]
         public int Replysys { get; set; }
 
         [JsonProperty("fake_ldate")]
-        public DateTime? FakeLdate { get; set; }
+        public string FakeLdate { get; set; }
 
 
         [JsonProperty("public")]
@@ -185,14 +185,14 @@ namespace ActiveCampaign.Net.Models.Campaign
         public Dictionary<int,int> messageIdArray{ get; set; }
 
         [JsonProperty("listslist")]
-        public int Listslist { get; set; }
+        public string Listslist { get; set; }
 
         [JsonProperty("messages")]
         public List<Message> Messages { get; set; }
 
         [JsonProperty("messageslist")]
 
-        public int Messageslist { get; set; }
+        public string Messageslist { get; set; }
 
         [JsonProperty("formname")]
         public string Formname { get; set; }

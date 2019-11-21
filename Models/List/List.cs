@@ -120,7 +120,7 @@ namespace ActiveCampaign.Net.Models.List
         public object Deletestamp { get; set; }
 
         [JsonProperty("udate")]
-        public DateTimeOffset Udate { get; set; }
+        public string Udate { get; set; }
 
         [JsonProperty("listid")]        
         public string Listid { get; set; }

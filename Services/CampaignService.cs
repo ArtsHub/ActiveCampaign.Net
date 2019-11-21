@@ -117,15 +117,26 @@
             }
         }
 
-        public List<BasicCampaign> List()
+        public List<BasicCampaign> ListBasicCampigns(Dictionary<string,string> getParameters)
         {
-            var jsonResponse = SendRequest("campaign_list", new Dictionary<string, string> { { "ids", "all" }, { "full", "0" } }, null);
+            var jsonResponse = SendRequest("campaign_list", getParameters, null);
 
             var customJsonConverter = new CustomJsonDateConverter();
 
             var basicListResponse = JsonConvert.DeserializeObject<BasicCampaignListResponse>(jsonResponse, customJsonConverter);
 
             return basicListResponse.List;
+
+        }
+        public List<CampaignFull> ListFullCampaigns(Dictionary<string,string> getParameters)
+        {
+            var jsonResponse = SendRequest("campaign_list", getParameters, null);
+
+            var customJsonConverter = new CustomJsonDateConverter();
+
+            var listResponse = JsonConvert.DeserializeObject<CampaignFullListResponse>(jsonResponse, customJsonConverter);
+
+            return listResponse.List;
 
         }
 

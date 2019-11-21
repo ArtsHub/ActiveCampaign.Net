@@ -32,7 +32,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public DateTime CreatedOn { get; set; }
 
         [Newtonsoft.Json.JsonProperty("sdate")]
-        public DateTime SubscribedOn { get; set; }
+        public string SubscribedOn { get; set; }
 
 
 

@@ -13,7 +13,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Type { get; set; }
 
         [JsonProperty("tstamp")]
-        public DateTimeOffset Tstamp { get; set; }
+        public string Tstamp { get; set; }
                
 
     }
