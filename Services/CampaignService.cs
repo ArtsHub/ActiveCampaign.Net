@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using ActiveCampaign.Net.Custom;
+    using ActiveCampaign.Net.Enums;
     using ActiveCampaign.Net.Models.Campaign;
     using Newtonsoft.Json;
 
@@ -149,6 +150,39 @@
             var basicListResponse = JsonConvert.DeserializeObject<CampaignFull>(jsonResponse, customJsonConverter);
 
             return basicListResponse;
+        }
+        public int DeleteCampaign(int id)
+        {
+            var jsonResponse = SendRequest("campaign_delete", new Dictionary<string, string> { { "id", id.ToString() } });
+
+            var customJsonConverter = new CustomJsonDateConverter();
+
+            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse, customJsonConverter);
+
+            return result.ResultCode;
+        }
+        /// <summary>
+        /// Send an existing campaign using optional actions like 'copy', 'preview', 'test'.
+        /// </summary>
+        /// <param name="campaignId"></param>
+        /// <param name="messageId"></param>
+        /// <param name="action">Examples: 'send' = send a campaign to this contact and to append him to the recipients list, 'copy' = send a copy of a campaign to contact (campaign is not updated), 'test' = send a test email to contact (campaign is not updated), 'source' = simulate a campaign test to contact (campaign is not updated), return message source, 'messagesize' = simulate a campaign test to contact (campaign is not updated), return message size, 'spamcheck' = simulate a campaign test to contact (campaign is not updated), return spam rate, 'preview' = same as preview
+        /// Example response:	
+        ///Variable Description
+        ///result_code Whether or not the response was successful.Examples: 1 = yes, 0 = no
+        ///result_message  A custom message that appears explaining what happened. Example: Message sent
+        ///result_output The result output used.Example: serialize
+        ///param>
+        /// <returns></returns>
+        public int CampaignSend(int campaignId, int messageId, CampaignSendAction action )
+        {
+            var jsonResponse = SendRequest("campaign_send", new Dictionary<string, string> { { "id", campaignId.ToString() }, { "messageid", messageId.ToString() }, { "action" , action.ToString()  }  });
+
+            var customJsonConverter = new CustomJsonDateConverter();
+
+            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse, customJsonConverter);
+
+            return result.ResultCode;
         }
 
 
