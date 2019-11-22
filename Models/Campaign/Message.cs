@@ -5,8 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ActiveCampaign.Net.Models.Campaign
 {
-    public class Message
+    public class Message : Result
     {
+        public string HtmlConstructor { get; set; }
+        public string HtmlFetch { get; set; }
+        public string HtmlFetchWhen { get; set; }
+        public string TextConstructor { get; set; }
+        public int CampaignId { get; set; }
+
         [JsonProperty("id")]
         public string Id { get; set; }
 
@@ -21,6 +27,7 @@ namespace ActiveCampaign.Net.Models.Campaign
 
         [JsonProperty("cdate")]
         public string CDate { get; set; }
+
 
         [JsonProperty("mdate")]
         public string MDate { get; set; }

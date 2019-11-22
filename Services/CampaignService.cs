@@ -30,23 +30,22 @@
         #region Methods
 
         /// <summary>
-        /// The function to be used to add the message for a campaign.
+        /// The function to be used to add or edit the message for a campaign.
         /// </summary>
         /// <param name="model">The model<see cref="MessageAdd"/></param>
         /// <returns>The <see cref="MessageAddResponse"/></returns>
-        public MessageAddResponse MessageAdd(MessageAdd model)
+        public MessageAddResponse MessageSync(Message model, bool isEdit)
         {
             try
             {
                 var postData = new Dictionary<string, string>()
                 {
-                    { "api_output", string.IsNullOrEmpty(model.ApiOutput) ? "json" : model.ApiOutput },
                     { "format", string.IsNullOrEmpty(model.Format) ? "mime" : model.Format },
                     { "subject", model.Subject },
-                    { "fromemail", model.FromEmail },
-                    { "fromname", model.FromName },
-                    { "reply2", model.ReplyTo },
-                    { "priority", model.Priority == default(int) ? "3" : model.Priority.ToString() },
+                    { "fromemail", model.Fromemail },
+                    { "fromname", model.Fromname },
+                    { "reply2", model.Reply2 },
+                    { "priority", string.IsNullOrEmpty(model.Priority)? "3" : model.Priority.ToString() },
                     { "charset",  string.IsNullOrEmpty(model.Charset) ? "utf-8" : model.Charset },
                     { "encoding", string.IsNullOrEmpty(model.Encoding) ? "quoted-printable" : model.Encoding },
                     { "htmlconstructor", string.IsNullOrEmpty(model.HtmlConstructor) ? "editor" : model.HtmlConstructor },
@@ -55,10 +54,18 @@
                     { "html", string.IsNullOrEmpty(model.Html)? "HTML is null or empty" : model.Html },
                     { "textconstructor", string.IsNullOrEmpty(model.TextConstructor) ? "editor" : model.TextConstructor },
                     { "text", string.IsNullOrEmpty(model.Text)? "Text is null or empty":model.Text },
-                    { $"p[{model.ListId}]", string.IsNullOrEmpty(model.ListId.ToString())?"0":model.ListId.ToString() },
+                    { $"p[{model.Listslist}]", string.IsNullOrEmpty(model.Listslist)?"0":model.Listslist },
                 };
 
-                var jsonResponse = SendRequest("message_add", new Dictionary<string, string>(), postData);
+                string apiAction = "message_add";
+
+                if (isEdit)
+                {
+                    postData.Add("id", model.Id);
+                    apiAction = "message_edit";
+                }
+
+                var jsonResponse = SendRequest(apiAction, new Dictionary<string, string>(), postData);
 
                 return JsonConvert.DeserializeObject<MessageAddResponse>(jsonResponse);
             }
@@ -154,11 +161,11 @@
 
             CampaignFull firstCampaign = null;
 
-            if(listResponse.List != null && listResponse.List.Count > 0)
+            if (listResponse.List != null && listResponse.List.Count > 0)
             {
                 firstCampaign = listResponse.List[0];
             }
-            
+
             return firstCampaign;
         }
 
@@ -202,13 +209,20 @@
         /// <returns></returns>
         public int UpdateCampaignStatus(int campaignId, string dateScheduled, CampaignStatus status)
         {
-            var jsonResponse = SendRequest("campaign_status", new Dictionary<string, string> { { "id", campaignId.ToString() },{ "sdate", dateScheduled }, { "status", ((int)(status)).ToString() } });
+            var jsonResponse = SendRequest("campaign_status", new Dictionary<string, string> { { "id", campaignId.ToString() }, { "sdate", dateScheduled }, { "status", ((int)(status)).ToString() } });
 
-            var customJsonConverter = new CustomJsonDateConverter();
-
-            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse, customJsonConverter);
+            var result = JsonConvert.DeserializeObject<ActiveCampaign.Net.Models.Result>(jsonResponse);
 
             return result.ResultCode;
+        }
+
+        public Message GetMessage(string messageId)
+        {
+            var jsonResponse = SendRequest("message_view", new Dictionary<string, string> { { "id", messageId } });
+
+            var result = JsonConvert.DeserializeObject<Message>(jsonResponse);
+
+            return result;
         }
 
         #endregion Methods

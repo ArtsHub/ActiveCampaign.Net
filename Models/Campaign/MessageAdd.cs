@@ -8,6 +8,8 @@
     {
         #region Properties
 
+        public string Id { get; set; }
+
         /// <summary>
         /// Gets or sets expected API output format. xml, json, or serialize (default is json)
         /// </summary>

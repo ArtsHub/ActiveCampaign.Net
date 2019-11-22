@@ -68,6 +68,7 @@
     <Compile Include="Models\Campaign\CampaignCreate.cs" />
     <Compile Include="Models\Campaign\CampaignCreateResponse.cs" />
     <Compile Include="Models\Campaign\MessageAdd.cs" />
+    <Compile Include="Models\Campaign\MessageGetResponse.cs" />
     <Compile Include="Models\Campaign\MessageAddResponse.cs" />
     <Compile Include="Models\Contact\Action.cs" />
     <Compile Include="Models\Contact\Option.cs" />
