@@ -247,6 +247,37 @@ namespace ActiveCampaign.Net.Models.Contact
                 this.Fields[fieldId.ToString()].Val = value;
             }
         }
+        /// <summary>
+        /// Get Field by id
+        /// May return NULL
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <returns></returns>
+        public Field GetField(int fieldId)
+        {
+            Field requestedField = null;
+
+            if(this.Fields !=  null && this.Fields.Count > 0)
+            {
+                requestedField = Fields[fieldId.ToString()];
+            }
+
+             return requestedField;
+        }
+        /// <summary>
+        /// Set Field by id
+        /// May return NULL
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetField(int fieldId, string value)
+        {
+            if(this.Fields !=  null && this.Fields.Count > 0)
+            {
+                this.Fields[fieldId.ToString()].Val = value;
+            }
+        }
 
     }
 }
