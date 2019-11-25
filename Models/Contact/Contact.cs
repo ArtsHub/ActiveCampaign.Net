@@ -184,13 +184,10 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Name { get; set; }
 
         [JsonProperty("lists")]
-        public  Dictionary<string,Models.List.BasicList> Lists { get; set; }
+        public  Dictionary<string,Models.List.List> Lists { get; set; }
 
         [JsonProperty("listslist")]
         public string Listslist { get; set; }
-
-        [JsonProperty("fields")]
-        public Dictionary<string,Field> Fields { get; set; }
 
         [JsonProperty("actions")]
         public List<Models.Contact.Action> Actions { get; set; }
@@ -216,6 +213,9 @@ namespace ActiveCampaign.Net.Models.Contact
         [JsonProperty("orgname")]
         public string Orgname { get; set; }
 
+        [JsonProperty("fields")]
+        public Dictionary<string, Field> Fields { get; set; }
+
         /// <summary>
         /// Get Field by id
         /// May return NULL
@@ -253,17 +253,26 @@ namespace ActiveCampaign.Net.Models.Contact
         /// </summary>
         /// <param name="fieldId"></param>
         /// <returns></returns>
-        public Field GetField(int fieldId)
+        public Field GetField(string fieldId)
         {
             Field requestedField = null;
 
-            if(this.Fields !=  null && this.Fields.Count > 0)
+            if (this.Fields != null && this.Fields.Count > 0)
             {
-                requestedField = Fields[fieldId.ToString()];
+                foreach (KeyValuePair<string, Field> f in Fields)
+                {
+                    if (f.Value.Tag == "%" + fieldId + "%")
+                    {
+                        requestedField = f.Value;
+                    }
+                }
             }
 
-             return requestedField;
+            return requestedField;
         }
+
+
+
         /// <summary>
         /// Set Field by id
         /// May return NULL
@@ -271,11 +280,17 @@ namespace ActiveCampaign.Net.Models.Contact
         /// <param name="fieldId"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public void SetField(int fieldId, string value)
+        public void SetField(string fieldId, string value)
         {
             if(this.Fields !=  null && this.Fields.Count > 0)
             {
-                this.Fields[fieldId.ToString()].Val = value;
+                foreach(KeyValuePair<string, Field> f in Fields)
+                {
+                    if(f.Value.Tag == "%" + fieldId + "%")
+                    {
+                        f.Value.Tag = value;
+                    }
+                }
             }
         }
 

@@ -60,21 +60,43 @@
         /// <param name="basicContactInfo"></param>
         /// <param name="contactLists"></param>
         /// <returns><see cref="ContactSyncResponse"/></returns>
-        public ContactSyncResponse SyncContact(Contact contact, IEnumerable<BasicContactList> contactLists)
+        public string SyncContact(Contact contact)
         {
             var postData = new Dictionary<string, string>
             {
                 { "email", contact.Email },
                 { "first_name", contact.FirstName ?? string.Empty },
                 { "last_name", contact.LastName ?? string.Empty },
+                { "status", contact.Status.ToString() ?? string.Empty },
+                { "status", contact.Status.ToString() ?? string.Empty },
                 { "customer_acct_name", contact.CustomerAcctName ?? string.Empty },
-                { "tags", string.Join(",", contact.Tags.ToArray() )},
-                { "field[0]", contact.CustomerAcctName ?? string.Empty },
-
+                { "tags", string.Join(",", contact.Tags.ToArray() )}
                 //{ "phone", basicContactInfo.Phone ?? string.Empty },
                 //{ "orgname", basicContactInfo.OrganizationName ?? string.Empty },
                 //{ "form", basicContactInfo.FormId.ToString() ?? string.Empty },
             };
+
+            //Fields
+            foreach (KeyValuePair<string, Field> f in contact.Fields)
+            {
+                if (!string.IsNullOrEmpty(f.Key) && f.Value != null && !string.IsNullOrEmpty(f.Value.Tag) && !string.IsNullOrEmpty(f.Value.Val))
+                {
+
+                    postData.Add("field[{f.Value.Tag}]", f.Value.Val ?? string.Empty);
+                }
+
+            }
+            //List & status for each list
+            foreach (KeyValuePair<string, ActiveCampaign.Net.Models.List.List> l in contact.Lists)
+            {
+                if (!string.IsNullOrEmpty(l.Key) && l.Value != null && !string.IsNullOrEmpty(l.Value.Id.ToString()))
+                {
+                    postData.Add("p[{(f.Value.Id.ToString()}]", (l.Value.Id.ToString() ?? string.Empty));
+                    postData.Add("status[{(f.Value.Id.ToString()}]", (contact.Status.ToString() ?? string.Empty));
+                }
+            }
+
+            //Lists
 
             //if (basicContactInfo.Tags != null && basicContactInfo.Tags.Any())
             //{
@@ -119,7 +141,7 @@
 
             var jsonResponse = SendRequest("contact_sync", null, postData);
 
-            return JsonConvert.DeserializeObject<ContactSyncResponse>(jsonResponse);
+            return JsonConvert.DeserializeObject<ContactSyncResponse>(jsonResponse).SubscriberId;
         }
 
         public List<BasicContactInfo> ListBasicContactInfo(int listId)
