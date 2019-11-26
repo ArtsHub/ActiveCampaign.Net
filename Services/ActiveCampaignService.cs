@@ -140,6 +140,7 @@ namespace ActiveCampaign.Net.Services
 
             var request = (HttpWebRequest)WebRequest.Create(urlBuilder.ToString());
 
+            string postData = string.Empty;
 
             if (postParameters != null)
             {
@@ -153,7 +154,7 @@ namespace ActiveCampaign.Net.Services
                     }
                 }
 
-                var postString = requestData.ToString().Substring(1);
+                var postString = postData = requestData.ToString().Substring(1);
 
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
@@ -163,9 +164,10 @@ namespace ActiveCampaign.Net.Services
                 {
                     stream.Write(Encoding.UTF8.GetBytes(postString), 0, postString.Length);
                 }
+
             }
 
-            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST AFTER POST: " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString());
+            ArtsHub.BLL.Emailing.Emailing.EmailDebugging("ActiveCampaignService.SendRequest() > REQUEST AFTER POST: " + method + " at " + DateTime.Now.ToString("dd-MM-yyy HH:mm"), "Method : " + method + "<br>HTTP METHOD : " + request.Method + "<br>CONTENT TYPE : " + request.ContentType + "<br>RQUEST URI : " + urlBuilder.ToString() + "<br>" + postData);
 
             string jsonResponse;
 

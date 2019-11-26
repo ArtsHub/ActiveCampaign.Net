@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using ActiveCampaign.Net.Models.Contact;
     using Newtonsoft.Json;
 
@@ -62,86 +63,103 @@
         /// <returns><see cref="ContactSyncResponse"/></returns>
         public string SyncContact(Contact contact)
         {
-            var postData = new Dictionary<string, string>
+            StringBuilder sb = new StringBuilder();
+            string result = string.Empty;
+            try
             {
-                { "email", contact.Email },
-                { "first_name", contact.FirstName ?? string.Empty },
-                { "last_name", contact.LastName ?? string.Empty },
-                { "status", contact.Status.ToString() ?? string.Empty },
-                { "status", contact.Status.ToString() ?? string.Empty },
-                { "customer_acct_name", contact.CustomerAcctName ?? string.Empty },
-                { "tags", string.Join(",", contact.Tags.ToArray() )}
-                //{ "phone", basicContactInfo.Phone ?? string.Empty },
-                //{ "orgname", basicContactInfo.OrganizationName ?? string.Empty },
-                //{ "form", basicContactInfo.FormId.ToString() ?? string.Empty },
-            };
-
-            //Fields
-            foreach (KeyValuePair<string, Field> f in contact.Fields)
-            {
-                if (!string.IsNullOrEmpty(f.Key) && f.Value != null && !string.IsNullOrEmpty(f.Value.Tag) && !string.IsNullOrEmpty(f.Value.Val))
+                sb.AppendLine("Creating postdata");
+                var postData = new Dictionary<string, string>
                 {
+                    { "email", contact.Email },
+                    { "first_name", contact.FirstName ?? string.Empty },
+                    { "last_name", contact.LastName ?? string.Empty },
+                    { "status", contact.Status ?? "1" },
+                };
+                sb.AppendLine("Initial postdata created<br>");
+                sb.AppendLine("Contact field count : " + contact.Fields.Count + "<br>");
 
-                    postData.Add("field[{f.Value.Tag}]", f.Value.Val ?? string.Empty);
+                if (!string.IsNullOrEmpty(contact.CustomerAcctName)) postData.Add("customer_acct_name", contact.CustomerAcctName);
+                
+                if (!string.IsNullOrEmpty(contact.Phone)) postData.Add("phone", contact.Phone);
+
+
+
+                //Fields
+                foreach (KeyValuePair<string, Field> f in contact.Fields)
+                {
+                    if (!string.IsNullOrEmpty(f.Key) && f.Value != null && !string.IsNullOrEmpty(f.Value.Tag) && !string.IsNullOrEmpty(f.Value.Val))
+                    {
+                        sb.AppendLine("field[" + f.Value.Tag + "] - " + f.Value.Val + "<br>");
+                        postData.Add("field[" +f.Value.Tag + "]", f.Value.Val ?? string.Empty);
+                    }
+
+                }
+                //List & status for each list
+                if (contact.Listid > 0)
+                {
+                    sb.AppendLine("p[" + contact.Listid.ToString() + "] - " + contact.Listid.ToString() + " <br>");
+                    sb.AppendLine("status[" + contact.Status + "] - " + contact.Status + " <br>");
+
+                    postData.Add("p[" + contact.Listid.ToString() + "]", (contact.Listid.ToString() ?? "0"));
+                    postData.Add("status[" + contact.Status + "]", (contact.Status ?? "1"));
                 }
 
+                //Lists
+
+                //if (basicContactInfo.Tags != null && basicContactInfo.Tags.Any())
+                //{
+                //    postData.Add("tags", string.Join(",", basicContactInfo.Tags));
+                //}
+
+                //foreach (var contactList in contactLists)
+                //{
+                //    postData.Add(
+                //        string.Format("p[{0}]", contactList.Id), contactList.Id.ToString());
+
+                //    postData.Add(
+                //        string.Format("status[{0}]", contactList.Id),
+                //        contactList.Status.ToString("D"));
+
+                //    postData.Add(
+                //        string.Format("noresponders[{0}]", contactList.Id),
+                //        Convert.ToInt32(contactList.Noresponders).ToString());
+
+                //    postData.Add(
+                //        string.Format("sdate[{0}]", contactList.Id),
+                //        contactList.SubscribeDate);
+
+                //    postData.Add(
+                //        string.Format("instantresponders[{0}]", contactList.Id),
+                //        Convert.ToInt32(contactList.InstantResponders).ToString());
+
+                //    postData.Add(
+                //        string.Format("lastmessage[{0}]", contactList.Id),
+                //        Convert.ToInt32(contactList.LastMessage).ToString());
+                //}
+
+                //if (basicContactInfo.Fields != null && basicContactInfo.Fields.Any())
+                //{
+                //    foreach (var field in basicContactInfo.Fields)
+                //    {
+                //        postData.Add(
+                //            string.Format("field[{0},0]", field.Id != null ? field.Id.ToString() : field.Name),
+                //            field.Value);
+                //    }
+                //}
+
+                ArtsHub.BLL.Emailing.Emailing.EmailDebugging(" Debugging in AC > ContactService ", sb.ToString());
+
+
+                var jsonResponse = SendRequest("contact_sync", new Dictionary<string, string> { }, postData);
+
+                result = JsonConvert.DeserializeObject<ContactSyncResponse>(jsonResponse).SubscriberId;
             }
-            //List & status for each list
-            foreach (KeyValuePair<string, ActiveCampaign.Net.Models.List.List> l in contact.Lists)
+            catch (Exception ex)
             {
-                if (!string.IsNullOrEmpty(l.Key) && l.Value != null && !string.IsNullOrEmpty(l.Value.Id.ToString()))
-                {
-                    postData.Add("p[{(f.Value.Id.ToString()}]", (l.Value.Id.ToString() ?? string.Empty));
-                    postData.Add("status[{(f.Value.Id.ToString()}]", (contact.Status.ToString() ?? string.Empty));
-                }
+                ArtsHub.BLL.Emailing.Emailing.EmailException(" in AC > ContactService ", sb.ToString(), ex);
             }
 
-            //Lists
-
-            //if (basicContactInfo.Tags != null && basicContactInfo.Tags.Any())
-            //{
-            //    postData.Add("tags", string.Join(",", basicContactInfo.Tags));
-            //}
-
-            //foreach (var contactList in contactLists)
-            //{
-            //    postData.Add(
-            //        string.Format("p[{0}]", contactList.Id), contactList.Id.ToString());
-
-            //    postData.Add(
-            //        string.Format("status[{0}]", contactList.Id),
-            //        contactList.Status.ToString("D"));
-
-            //    postData.Add(
-            //        string.Format("noresponders[{0}]", contactList.Id),
-            //        Convert.ToInt32(contactList.Noresponders).ToString());
-
-            //    postData.Add(
-            //        string.Format("sdate[{0}]", contactList.Id),
-            //        contactList.SubscribeDate);
-
-            //    postData.Add(
-            //        string.Format("instantresponders[{0}]", contactList.Id),
-            //        Convert.ToInt32(contactList.InstantResponders).ToString());
-
-            //    postData.Add(
-            //        string.Format("lastmessage[{0}]", contactList.Id),
-            //        Convert.ToInt32(contactList.LastMessage).ToString());
-            //}
-
-            //if (basicContactInfo.Fields != null && basicContactInfo.Fields.Any())
-            //{
-            //    foreach (var field in basicContactInfo.Fields)
-            //    {
-            //        postData.Add(
-            //            string.Format("field[{0},0]", field.Id != null ? field.Id.ToString() : field.Name),
-            //            field.Value);
-            //    }
-            //}
-
-            var jsonResponse = SendRequest("contact_sync", null, postData);
-
-            return JsonConvert.DeserializeObject<ContactSyncResponse>(jsonResponse).SubscriberId;
+            return result;
         }
 
         public List<BasicContactInfo> ListBasicContactInfo(int listId)

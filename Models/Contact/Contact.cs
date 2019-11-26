@@ -23,7 +23,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Udate { get; set; }
 
         [JsonProperty("status")]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         [JsonProperty("responder")]
         public int Responder { get; set; }
@@ -184,7 +184,7 @@ namespace ActiveCampaign.Net.Models.Contact
         public string Name { get; set; }
 
         [JsonProperty("lists")]
-        public  Dictionary<string,Models.List.List> Lists { get; set; }
+        public Dictionary<string, Models.List.List> Lists { get; set; }
 
         [JsonProperty("listslist")]
         public string Listslist { get; set; }
@@ -226,12 +226,12 @@ namespace ActiveCampaign.Net.Models.Contact
         {
             Field requestedField = null;
 
-            if(this.Fields !=  null && this.Fields.Count > 0)
+            if (this.Fields != null && this.Fields.Count > 0)
             {
                 requestedField = Fields[fieldId.ToString()];
             }
 
-             return requestedField;
+            return requestedField;
         }
         /// <summary>
         /// Set Field by id
@@ -242,7 +242,7 @@ namespace ActiveCampaign.Net.Models.Contact
         /// <returns></returns>
         public void SetField(int fieldId, string value)
         {
-            if(this.Fields !=  null && this.Fields.Count > 0)
+            if (this.Fields != null && this.Fields.Count > 0)
             {
                 this.Fields[fieldId.ToString()].Val = value;
             }
@@ -282,16 +282,39 @@ namespace ActiveCampaign.Net.Models.Contact
         /// <returns></returns>
         public void SetField(string fieldId, string value)
         {
-            if(this.Fields !=  null && this.Fields.Count > 0)
+            if (this.Fields != null && this.Fields.Count > 0)
             {
-                foreach(KeyValuePair<string, Field> f in Fields)
+                foreach (KeyValuePair<string, Field> f in Fields)
                 {
-                    if(f.Value.Tag == "%" + fieldId + "%")
+                    if (f.Value.Tag == "%" + fieldId + "%")
                     {
                         f.Value.Tag = value;
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Set Field by id
+        /// May return NULL
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void AddField(int key,string tag, string value)
+        {
+            Field newField = new Field();
+
+            newField.Val = value;
+            newField.Tag = "%" + tag + "%";
+
+
+            if (Fields == null)
+            {
+                this.Fields = new Dictionary<string, Field>();
+            }
+
+            this.Fields.Add(key.ToString(), newField);
+
         }
 
     }
