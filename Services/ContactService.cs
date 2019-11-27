@@ -55,6 +55,19 @@
         }
 
         /// <summary>
+        /// Get contact by email
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Contact GetContact(string emailId)
+        {
+            var getData = new Dictionary<string, string> { { "email", emailId } };
+            var jsonResponse = SendRequest("contact_view_email", getData, null);
+
+            return JsonConvert.DeserializeObject<Contact>(jsonResponse);
+        }
+
+        /// <summary>
         /// Add or edit a contact based on their email address. Instead of calling contact_view to check if the contact exists, 
         /// and then calling contact_add or contact_edit, you can make just one call and include only the information you want added or updated.
         /// </summary>
@@ -67,41 +80,49 @@
             string result = string.Empty;
             try
             {
-                sb.AppendLine("Creating postdata");
+                sb.AppendLine("Creating postdata<br>");
                 var postData = new Dictionary<string, string>
                 {
                     { "email", contact.Email },
                     { "first_name", contact.FirstName ?? string.Empty },
-                    { "last_name", contact.LastName ?? string.Empty },
-                    { "status", contact.Status ?? "1" },
+                    { "last_name", contact.LastName ?? string.Empty }
                 };
                 sb.AppendLine("Initial postdata created<br>");
-                sb.AppendLine("Contact field count : " + contact.Fields.Count + "<br>");
+
+                if(contact.Fields != null) sb.AppendLine("Contact field count : " + contact.Fields.Count + "<br>");
 
                 if (!string.IsNullOrEmpty(contact.CustomerAcctName)) postData.Add("customer_acct_name", contact.CustomerAcctName);
-                
+
                 if (!string.IsNullOrEmpty(contact.Phone)) postData.Add("phone", contact.Phone);
 
+                if (!string.IsNullOrEmpty(contact.Status)) postData.Add("status", contact.Status);
 
+                sb.AppendLine("Initial Before fields<br>");
 
                 //Fields
-                foreach (KeyValuePair<string, Field> f in contact.Fields)
+                if (contact.Fields != null)
                 {
-                    if (!string.IsNullOrEmpty(f.Key) && f.Value != null && !string.IsNullOrEmpty(f.Value.Tag) && !string.IsNullOrEmpty(f.Value.Val))
+                    foreach (KeyValuePair<string, Field> f in contact.Fields)
                     {
-                        sb.AppendLine("field[" + f.Value.Tag + "] - " + f.Value.Val + "<br>");
-                        postData.Add("field[" +f.Value.Tag + "]", f.Value.Val ?? string.Empty);
-                    }
+                        if (!string.IsNullOrEmpty(f.Key) && f.Value != null && !string.IsNullOrEmpty(f.Value.Tag) && !string.IsNullOrEmpty(f.Value.Val))
+                        {
+                            sb.AppendLine("field[" + f.Value.Tag + "] - " + f.Value.Val + "<br>");
+                            postData.Add("field[" + f.Value.Tag + "]", f.Value.Val ?? string.Empty);
+                        }
 
+                    }
                 }
+
+                sb.AppendLine("Initial Before lists<br>");
+
                 //List & status for each list
-                if (contact.Listid > 0)
-                {
+                if (contact.Listid > 0 && !string.IsNullOrEmpty(contact.Status))
+                { 
                     sb.AppendLine("p[" + contact.Listid.ToString() + "] - " + contact.Listid.ToString() + " <br>");
                     sb.AppendLine("status[" + contact.Status + "] - " + contact.Status + " <br>");
 
-                    postData.Add("p[" + contact.Listid.ToString() + "]", (contact.Listid.ToString() ?? "0"));
-                    postData.Add("status[" + contact.Status + "]", (contact.Status ?? "1"));
+                    postData.Add("p[" + contact.Listid.ToString() + "]", contact.Listid.ToString());
+                    postData.Add("status[" + contact.Listid.ToString() + "]", contact.Status);
                 }
 
                 //Lists
