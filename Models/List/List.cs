@@ -14,6 +14,9 @@ namespace ActiveCampaign.Net.Models.List
         [JsonProperty("userid")]        
         public string Userid { get; set; }
 
+        [JsonProperty("status")]        
+        public string Status { get; set; }
+
         [JsonProperty("p_use_tracking")]        
         public string PUseTracking { get; set; }
 

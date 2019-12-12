@@ -93,9 +93,11 @@
 
                 if (!string.IsNullOrEmpty(contact.CustomerAcctName)) postData.Add("customer_acct_name", contact.CustomerAcctName);
 
+                if (contact.Formid > 0) postData.Add("form", contact.Formid.ToString());
+
                 if (!string.IsNullOrEmpty(contact.Phone)) postData.Add("phone", contact.Phone);
 
-                if (!string.IsNullOrEmpty(contact.Status)) postData.Add("status", contact.Status);
+                //if (!string.IsNullOrEmpty(contact.Status)) postData.Add("status", contact.Status);
 
                 sb.AppendLine("Initial Before fields<br>");
 
@@ -119,7 +121,7 @@
                 if (contact.Listid > 0 && !string.IsNullOrEmpty(contact.Status))
                 { 
                     sb.AppendLine("p[" + contact.Listid.ToString() + "] - " + contact.Listid.ToString() + " <br>");
-                    sb.AppendLine("status[" + contact.Status + "] - " + contact.Status + " <br>");
+                    sb.AppendLine("status[" + contact.Listid + "] - " + contact.Status + " <br>");
 
                     postData.Add("p[" + contact.Listid.ToString() + "]", contact.Listid.ToString());
                     postData.Add("status[" + contact.Listid.ToString() + "]", contact.Status);
