@@ -307,13 +307,18 @@ namespace ActiveCampaign.Net.Models.Contact
             newField.Val = value;
             newField.Tag = "%" + tag + "%";
 
-
-            if (Fields == null)
+            try
             {
-                this.Fields = new Dictionary<string, Field>();
-            }
+                if (Fields == null)
+                {
+                    this.Fields = new Dictionary<string, Field>();
+                }
 
-            this.Fields.Add(key.ToString(), newField);
+                this.Fields.Add(key.ToString(), newField);
+            }catch(Exception ex)
+            {
+                ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in ActiveCampaign > Contact > AddField " + tag, "Value : " + value, ex, true);
+            }
 
         }
 
