@@ -115,7 +115,7 @@
                     }
                 }
 
-                sb.AppendLine("Initial Before lists<br>");
+                sb.AppendLine("Initial Before lists : " + contact.Listid + "<br>Status : " + contact.Status + "<br>");
 
                 //List & status for each list
                 if (contact.Listid > 0 && !string.IsNullOrEmpty(contact.Status))
