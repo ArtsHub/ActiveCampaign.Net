@@ -170,7 +170,7 @@
                 //    }
                 //}
 
-                ArtsHub.BLL.Emailing.Emailing.EmailDebugging(" Debugging in AC > ContactService ", sb.ToString());
+               // ArtsHub.BLL.Emailing.Emailing.EmailDebugging(" Debugging in AC > ContactService ", sb.ToString());
 
 
                 var jsonResponse = SendRequest("contact_sync", new Dictionary<string, string> { }, postData);
@@ -179,7 +179,7 @@
             }
             catch (Exception ex)
             {
-                ArtsHub.BLL.Emailing.Emailing.EmailException(" in AC > ContactService ", sb.ToString(), ex);
+                ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in AC > ContactService ", sb.ToString(), ex, true);
             }
 
             return result;
