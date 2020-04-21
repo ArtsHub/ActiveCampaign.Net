@@ -71,7 +71,7 @@
             }
             catch (Exception ex)
             {
-                ArtsHub.BLL.Emailing.Emailing.EmailException(" in CampaignService.MessageAdd", "", ex);
+                ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in CampaignService.MessageAdd", "", ex, true);
 
                 throw new ExceptionService(ex.Message);
             }
