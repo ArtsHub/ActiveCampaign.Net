@@ -317,7 +317,8 @@ namespace ActiveCampaign.Net.Models.Contact
                 this.Fields.Add(key.ToString(), newField);
             }catch(Exception ex)
             {
-                ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in ActiveCampaign > Contact > AddField " + tag, "Value : " + value, ex, true);
+                //ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in ActiveCampaign > Contact > AddField " + tag, "Value : " + value, ex, true);
+                throw new Services.ExceptionService(ex.Message + "<br>in ActiveCampaign > Contact > AddField " + tag + " Value : " + value);
             }
 
         }
