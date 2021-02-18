@@ -180,7 +180,7 @@
             catch (Exception ex)
             {
                 //ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in AC > ContactService ", sb.ToString(), ex, true);
-                ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in AC > ContactService ", sb.ToString(), ex, true);
+                //ArtsHub.BLL.Emailing.Emailing.EmailException_NoPageContext(" in AC > ContactService ", sb.ToString(), ex, true);
             }
 
             return result;
